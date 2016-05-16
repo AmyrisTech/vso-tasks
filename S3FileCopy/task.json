@@ -1,0 +1,85 @@
+{
+    "id": "4e324377-ecd7-4281-a219-192964ad215a",
+    "name": "S3FileCopy",
+    "friendlyName": "AWS S3 File Copy",
+    "description": "Copy files to S3 bucket",
+    "helpMarkDown": "",
+    "category": "Deploy",
+    "visibility": [
+        "Build",
+        "Release"
+    ],
+    "author": "Amyris Tech",
+    "version": {
+        "Major": 1,
+        "Minor": 0,
+        "Patch": 7
+    },
+    "groups": [
+        {
+            "name": "aws-common",
+            "displayName": "Common Credential and Region Parameters",
+            "isExpanded": true
+        }
+    ],
+    "inputs": [
+        {
+            "name": "SourcePath",
+            "type": "filePath",
+            "label": "Source",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "Absolute path of the source folder, or file on the local machine, or a UNC share. Expression should return a single folder or a file."
+        },
+        {
+            "name": "Bucket",
+            "type": "string",
+            "label": "Bucket Name",
+            "defaultValue": "",
+            "required": true,
+            "helpMarkDown": "The name of the bucket that will hold the uploaded content."
+        },
+        {
+            "name": "KeyPrefix",
+            "type": "string",
+            "label": "Key Prefix",
+            "defaultValue": "/",
+            "required": true,
+            "helpMarkDown": "The common key prefix that will be used for the objects uploaded to S3. Use this parameter when uploading multiple objects. Each object's final key will be of the form 'keyprefix/filename'.To indicate that all content should be uploaded to the root of the bucket, specify a KeyPrefix of '\\' or '/'."
+        },
+        {
+            "name": "Region",
+            "type": "string",
+            "label": "Region",
+            "defaultValue": "$(AWS_REGION)",
+            "required": true,
+            "groupName": "aws-common",
+            "helpMarkDown": "The system name of the AWS region in which the operation should be invoked. For example, us-east-1, eu-west-1 etc."
+        },
+        {
+            "name": "AccessKey",
+            "type": "string",
+            "label": "Access Key",
+            "defaultValue": "$(AWS_ACCESS_KEY)",
+            "required": true,
+            "groupName": "aws-common",
+            "helpMarkDown": "The AWS access key for the user account. This can be a temporary access key if the corresponding session token is supplied to the -SessionToken parameter. Temporary session credentials can be set for the current shell instance only and cannot be saved to the credential store file."
+        },
+        {
+            "name": "SecretKey",
+            "type": "string",
+            "label": "Secret Key",
+            "defaultValue": "$(AWS_SECRET_KEY)",
+            "required": true,
+            "groupName": "aws-common",
+            "helpMarkDown": "The AWS secret key for the user account. This can be a temporary secret key if the corresponding session token is supplied to the -SessionToken parameter. Temporary session credentials can be set for the current shell instance only and cannot be saved to the credential store file."
+        }
+    ],
+    "instanceNameFormat": "Copy to $(Bucket)/$(KeyPrefix)",
+    "execution": {
+        "Powershell": {
+            "target": "$(currentDirectory)\\S3FileCopy.ps1",
+            "argumentFormat": ""
+        }
+    }
+}
